@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#160f25">
+  <title>Menuju Hari Spesialmu</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: #160f25;
+      color: #fff8f4;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 24px;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse at 50% 110%, #7d315d66, transparent 55%),
+        radial-gradient(ellipse at 10% 10%, #613c8b55, transparent 40%),
+        #160f25;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: -40%;
+      content: "";
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 35% 40%, #bd568733, transparent 35%),
+        radial-gradient(ellipse at 70% 60%, #7350bc33, transparent 38%);
+      filter: blur(30px);
+      animation: ambient-drift 20s ease-in-out infinite alternate;
+    }
+
+    .stars, .stars::before, .stars::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      background-image:
+        radial-gradient(1px 1px at 15% 22%, #fff 99%, transparent),
+        radial-gradient(2px 2px at 74% 16%, #ffd8e8 99%, transparent),
+        radial-gradient(1px 1px at 88% 61%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 32% 78%, #ffe5bc 99%, transparent),
+        radial-gradient(2px 2px at 57% 43%, #fff 99%, transparent);
+      background-size: 320px 280px;
+      opacity: .42;
+      animation: twinkle 5s ease-in-out infinite alternate, star-drift 36s linear infinite;
+    }
+
+    .stars::before { transform: translate(90px, 70px); opacity: .6; }
+    .stars::after { transform: translate(-60px, 140px); opacity: .35; animation-delay: -2s; }
+
+    main {
+      position: relative;
+      width: min(100%, 680px);
+      padding: clamp(32px, 7vw, 64px) clamp(22px, 6vw, 56px);
+      text-align: center;
+      border: 1px solid #ffffff20;
+      border-radius: 30px;
+      background: linear-gradient(145deg, #ffffff12, #ffffff06);
+      box-shadow: 0 24px 90px #08040e88, inset 0 1px #ffffff18;
+      backdrop-filter: blur(12px);
+      animation: arrive .9s ease-out both;
+    }
+
+    .heart {
+      display: inline-grid;
+      width: 58px;
+      height: 58px;
+      place-items: center;
+      margin-bottom: 20px;
+      border-radius: 50%;
+      background: #ff719126;
+      color: #ff91ac;
+      font-size: 27px;
+      animation: heartbeat 1.8s ease-in-out infinite;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #ffc2d2;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.15rem, 8vw, 4rem);
+      font-weight: 500;
+      line-height: 1.1;
+      text-wrap: balance;
+    }
+
+    .intro {
+      margin: 18px auto 30px;
+      color: #e5d8e7;
+      font-size: clamp(.95rem, 3vw, 1.08rem);
+      line-height: 1.7;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(8px, 2vw, 16px);
+      margin: 0 auto 28px;
+    }
+
+    .unit {
+      padding: 17px 6px 14px;
+      border: 1px solid #ffffff18;
+      border-radius: 16px;
+      background: #100a1c70;
+    }
+
+    .number {
+      display: block;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      font-size: clamp(1.8rem, 8vw, 3.25rem);
+      font-weight: 650;
+      letter-spacing: -.04em;
+      line-height: 1.1;
+    }
+
+    .label {
+      display: block;
+      margin-top: 8px;
+      color: #d8c5da;
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .timezone {
+      margin: 0;
+      color: #c8b7ce;
+      font-size: .82rem;
+    }
+
+    .gift-stage {
+      display: none;
+      min-height: 250px;
+      align-content: center;
+      justify-items: center;
+      gap: 16px;
+    }
+
+    .gift-button {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 0;
+      border-radius: 22px;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .gift-button:hover, .gift-button:focus-visible {
+      transform: translateY(-5px) scale(1.04);
+      background: #ffffff12;
+    }
+
+    .gift-button:focus-visible {
+      outline: 2px solid #ffc2d2;
+      outline-offset: 4px;
+    }
+
+    .gift-icon {
+      display: block;
+      font-size: clamp(5rem, 18vw, 8rem);
+      filter: drop-shadow(0 12px 24px #ff719155);
+      animation: gift-float 2.2s ease-in-out infinite;
+    }
+
+    .gift-prompt {
+      margin: 0;
+      color: #ffe0a6;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+    }
+
+    .birthday-message {
+      display: none;
+      max-width: 440px;
+      margin: 12px 0 0;
+      padding: clamp(22px, 5vw, 34px);
+      border: 1px solid #ffd6a655;
+      border-radius: 22px;
+      background: linear-gradient(145deg, #ffcf8b20, #ff71911c);
+      box-shadow: 0 12px 40px #08040e55, inset 0 1px #ffffff20;
+      color: #ffe0a6;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.5rem, 5vw, 2.15rem);
+      line-height: 1.5;
+      animation: arrive .8s ease-out both;
+    }
+
+    .burst-layer {
+      position: fixed;
+      z-index: 5;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .burst-particle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      opacity: 0;
+      animation: confetti-burst 1.25s cubic-bezier(.12,.7,.25,1) forwards;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .burst-particle.confetti {
+      width: var(--size);
+      height: calc(var(--size) * .55);
+      border-radius: 2px;
+      background: var(--color);
+    }
+
+    .burst-particle.emoji {
+      font-size: var(--size);
+      animation-name: emoji-burst;
+      animation-duration: 1.8s;
+    }
+
+    .blink-dots {
+      white-space: nowrap;
+    }
+
+    .blink-dots span {
+      display: inline-block;
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
+    .blink-dots span:nth-child(2) { animation-delay: .2s; }
+    .blink-dots span:nth-child(3) { animation-delay: .4s; }
+
+    main.celebrating .heart,
+    main.celebrating .eyebrow,
+    main.celebrating #title,
+    main.celebrating .intro,
+    main.celebrating .countdown,
+    main.celebrating .timezone { display: none; }
+    main.exploding .heart,
+    main.exploding .eyebrow,
+    main.exploding #title,
+    main.exploding .intro,
+    main.exploding .countdown,
+    main.exploding .timezone { visibility: hidden; }
+    main.celebrating .gift-stage { display: grid; animation: arrive .7s ease-out both; }
+    main.celebrating.opened .gift-button,
+    main.celebrating.opened .gift-prompt { display: none; }
+    main.celebrating.opened .birthday-message { display: block; }
+
+    @keyframes twinkle { to { opacity: .72; } }
+    @keyframes star-drift {
+      to { background-position: -320px -280px; }
+    }
+    @keyframes ambient-drift {
+      from { transform: translate3d(-3%, -2%, 0) rotate(-4deg); }
+      to { transform: translate3d(3%, 2%, 0) rotate(4deg); }
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      12% { transform: scale(1.12); }
+      24% { transform: scale(1); }
+      36% { transform: scale(1.08); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: .25; }
+      50% { opacity: 1; text-shadow: 0 0 12px #ffd3e2; }
+    }
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gift-float {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+    @keyframes confetti-burst {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(.4) rotate(0); }
+      100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(1) rotate(var(--spin)); }
+    }
+    @keyframes emoji-burst {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.3) rotate(0); }
+      15% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(1.2) rotate(var(--spin)); }
+    }
+
+    @media (max-width: 420px) {
+      body { padding: 16px; }
+      main { border-radius: 24px; }
+      .unit { padding: 14px 3px 12px; border-radius: 12px; }
+      .label { font-size: .58rem; letter-spacing: .08em; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <main id="card">
+    <div class="heart" aria-hidden="true">♥</div>
+    <p class="eyebrow">Untuk seseorang yang istimewa</p>
+    <h1 id="title">Ehem<span class="blink-dots" aria-label="..."><span aria-hidden="true">.</span><span aria-hidden="true">.</span><span aria-hidden="true">.</span></span> ehem<span class="blink-dots" aria-label="..."><span aria-hidden="true">.</span><span aria-hidden="true">.</span><span aria-hidden="true">.</span></span> ada apa nih? ✨</h1>
+    <p class="intro">Waktu mundur<span class="blink-dots" aria-label="..."><span aria-hidden="true">.</span><span aria-hidden="true">.</span><span aria-hidden="true">.</span></span> hati-hati meledak! 💥</p>
+
+    <div class="countdown" role="timer" aria-label="Hitung mundur menuju ulang tahun">
+      <div class="unit"><span class="number" id="hours">00</span><span class="label">Jam</span></div>
+      <div class="unit"><span class="number" id="minutes">00</span><span class="label">Menit</span></div>
+      <div class="unit"><span class="number" id="seconds">00</span><span class="label">Detik</span></div>
+      <div class="unit"><span class="number" id="milliseconds">00</span><span class="label">1/100 detik</span></div>
+    </div>
+
+    <p class="timezone">Menghitung menuju pukul 00.00 · Kuala Terengganu, Malaysia</p>
+    <section class="gift-stage" aria-live="polite" aria-label="Kejutan ulang tahun">
+      <button class="gift-button" id="giftButton" type="button" aria-label="Buka kado kejutan">
+        <span class="gift-icon" aria-hidden="true">🎁</span>
+      </button>
+      <p class="gift-prompt">Coba buka 💝</p>
+      <p class="birthday-message" id="birthdayMessage" role="status">Happy birtday cayang acuuu yang cantik baik... 💖</p>
+    </section>
+  </main>
+  <div class="burst-layer" id="burstLayer" aria-hidden="true"></div>
+
+  <script>
+    const malaysiaTimeZone = "Asia/Kuala_Lumpur";
+    const card = document.getElementById("card");
+    const title = document.getElementById("title");
+    const burstLayer = document.getElementById("burstLayer");
+    const giftButton = document.getElementById("giftButton");
+    const fields = {
+      hours: document.getElementById("hours"),
+      minutes: document.getElementById("minutes"),
+      seconds: document.getElementById("seconds"),
+      milliseconds: document.getElementById("milliseconds")
+    };
+
+    function nextMalaysiaMidnight(now) {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: malaysiaTimeZone,
+        year: "numeric",
+        month: "numeric",
+        day: "numeric"
+      }).formatToParts(now);
+      const date = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+      return Date.UTC(Number(date.year), Number(date.month) - 1, Number(date.day) + 1) - 8 * 60 * 60 * 1000;
+    }
+
+    const target = nextMalaysiaMidnight(new Date());
+    const pad = value => String(value).padStart(2, "0");
+
+    function createBurst(type, count) {
+      const colors = ["#ff7191", "#ffd166", "#fff1cc", "#b69cff", "#83e6d0"];
+      const emojis = ["💖", "🎉", "✨", "💕", "🥳", "🎂", "💝", "🌟"];
+
+      for (let index = 0; index < count; index += 1) {
+        const particle = document.createElement("span");
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 90 + Math.random() * Math.min(window.innerWidth, window.innerHeight) * .42;
+        particle.className = `burst-particle ${type}`;
+        particle.style.setProperty("--x", `${Math.cos(angle) * distance}px`);
+        particle.style.setProperty("--y", `${Math.sin(angle) * distance}px`);
+        particle.style.setProperty("--spin", `${Math.round(Math.random() * 900 - 450)}deg`);
+        particle.style.setProperty("--size", `${type === "emoji" ? 18 + Math.random() * 22 : 6 + Math.random() * 8}px`);
+        particle.style.setProperty("--delay", `${Math.random() * .18}s`);
+        if (type === "emoji") {
+          particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        } else {
+          particle.style.setProperty("--color", colors[Math.floor(Math.random() * colors.length)]);
+        }
+        burstLayer.append(particle);
+        particle.addEventListener("animationend", () => particle.remove(), { once: true });
+      }
+    }
+
+    function celebrate() {
+      card.classList.add("exploding");
+      createBurst("confetti", 70);
+      window.setTimeout(() => {
+        card.classList.remove("exploding");
+        card.classList.add("celebrating");
+        title.textContent = "Hari ini adalah harimu! 🎉";
+        giftButton.focus();
+      }, 1100);
+    }
+
+    giftButton.addEventListener("click", () => {
+      if (card.classList.contains("opened")) return;
+      card.classList.add("opened");
+      createBurst("emoji", 42);
+    });
+
+    function updateCountdown() {
+      const remaining = Math.max(0, target - Date.now());
+      if (remaining === 0) {
+        celebrate();
+        return;
+      }
+
+      fields.hours.textContent = pad(Math.floor(remaining / 3_600_000));
+      fields.minutes.textContent = pad(Math.floor((remaining % 3_600_000) / 60_000));
+      fields.seconds.textContent = pad(Math.floor((remaining % 60_000) / 1_000));
+      fields.milliseconds.textContent = pad(Math.floor((remaining % 1_000) / 10));
+      requestAnimationFrame(updateCountdown);
+    }
+
+    updateCountdown();
+  </script>
+</body>
+</html>
